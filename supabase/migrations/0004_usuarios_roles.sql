@@ -13,9 +13,9 @@ create table if not exists usuarios_autorizados (
   created_at timestamptz default now()
 );
 
--- El administrador (tú). Cambia el correo si usas otro para entrar.
+-- El administrador. Cambia el correo si usas otro para entrar.
 insert into usuarios_autorizados (email, rol, nombre, activo) values
-  ('davidsambr716@gmail.com', 'admin', 'Administrador', true)
+  ('riazseguimiento@gmail.com', 'admin', 'Administrador', true)
 on conflict (email) do update set rol = 'admin', activo = true;
 
 -- Prototipo: acceso total (igual que el resto). La APP exige rol admin para escribir
