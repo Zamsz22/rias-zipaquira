@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/*
+  Design DNA v3 — Plataforma RIAS Zipaquirá
+  Paleta clínica profesional: teal/cian + slate. Sidebar navy.
+  El semáforo (verde/ámbar/naranja/rojo) se reserva SOLO para datos.
+  (Los tokens conservan el nombre histórico "rias-azul/azul2/cielo".)
+*/
+@theme {
+  --color-rias-azul: #1f5fd0; /* azul institucional Secretaría de Salud */
+  --color-rias-azul2: #16429b; /* azul profundo (cards/degradados) */
+  --color-rias-cielo: #6f9eee; /* azul claro */
+  --color-rias-lima: #8fc0ff; /* acento (azul claro brillante) */
+  --color-rias-lima2: #6fa8f5;
+  --color-rias-verde: #16a34a;
+  --color-rias-amarillo: #d97706;
+  --color-rias-naranja: #ea580c;
+  --color-rias-rojo: #dc2626;
+  --color-rias-app: #eef3fb;
+  --color-rias-card: #ffffff;
+  --color-rias-borde: #e2e9f5;
+  --color-rias-texto: #16223c;
+  --color-rias-tenue: #5a6781;
+  --color-rias-noche: #0f2a66; /* azul navy (degradados) */
+  --color-rias-noche2: #173b86;
+
+  --radius-card: 22px;
+  --shadow-card: 0 1px 2px rgba(20, 50, 110, 0.05), 0 10px 28px rgba(20, 50, 110, 0.08);
+  --shadow-lift: 0 2px 6px rgba(20, 50, 110, 0.09), 0 20px 46px rgba(20, 50, 110, 0.17);
+  --shadow-brand: 0 8px 22px rgba(31, 95, 208, 0.32);
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-geist-sans), system-ui, sans-serif;
+}
+
+:root {
+  --background: #f1f5f8;
+  --foreground: #15212b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Títulos con la tipografía display */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.rias-card {
+  background: var(--color-rias-card);
+  border: 1px solid var(--color-rias-borde);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.rias-bar-track {
+  background: #e9eef2;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.rias-hover {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rias-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c4d2db transparent;
+}
+
+/* Tour de inducción (driver.js) con la identidad RIAS */
+.driver-popover.rias-tour {
+  border-radius: 18px;
+  box-shadow: var(--shadow-lift);
+}
+.driver-popover.rias-tour .driver-popover-title {
+  color: var(--color-rias-azul);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.driver-popover.rias-tour .driver-popover-description {
+  color: var(--color-rias-texto);
+  line-height: 1.5;
+}
+.driver-popover.rias-tour .driver-popover-next-btn {
+  background: var(--color-rias-azul);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  text-shadow: none;
+  font-weight: 700;
+}
+.driver-popover.rias-tour .driver-popover-prev-btn {
+  border-radius: 10px;
+  text-shadow: none;
+}
+.driver-popover.rias-tour .driver-popover-progress-text {
+  color: var(--color-rias-tenue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .rias-hover:hover {
+    transform: none;
+  }
+}

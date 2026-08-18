@@ -1,0 +1,7 @@
+name = "rias-excel-analyzer"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# Workers AI (modelo gratuito de Cloudflare)
+[ai]
+binding = "AI"
