@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient, supabaseConfigurado } from "@/lib/supabase/server";
-import { usuarioActual, authRequerido } from "@/lib/auth";
 
 // Seguimiento editable del Plan de Mejora (una fila por hallazgo).
 type Seg = {
@@ -38,9 +37,6 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   if (!supabaseConfigurado) {
     return NextResponse.json({ ok: false, error: "Supabase no está configurado." }, { status: 503 });
-  }
-  if (authRequerido() && !(await usuarioActual())) {
-    return NextResponse.json({ ok: false, error: "Inicia sesión con un correo autorizado para editar." }, { status: 401 });
   }
   const supabase = await cliente();
   if (!supabase) return NextResponse.json({ ok: false, error: "Sin cliente." }, { status: 503 });

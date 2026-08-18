@@ -13,12 +13,8 @@ import {
   X,
   PlusCircle,
   Sparkles,
-  ShieldCheck,
-  LogIn,
-  LogOut,
 } from "lucide-react";
 import { iniciarTour } from "@/lib/tour";
-import { createClient } from "@/lib/supabase/client";
 
 const NAV = [
   { href: "/", label: "Inicio", icon: Compass },
@@ -49,24 +45,10 @@ function Marca() {
   );
 }
 
-type Yo = { email: string; rol: string } | null;
-
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [abierto, setAbierto] = useState(false);
-  const [yo, setYo] = useState<Yo>(null);
-
-  useEffect(() => {
-    fetch("/api/yo").then((r) => r.json()).then((j) => setYo(j.usuario)).catch(() => {});
-  }, [pathname]);
-
-  async function salir() {
-    await createClient()?.auth.signOut();
-    setYo(null);
-    router.refresh();
-    router.push("/");
-  }
 
   // Lanza el tour la primera vez que entra el usuario, y cuando se pida (botón / Manual).
   useEffect(() => {
@@ -123,22 +105,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             >
               <PlusCircle className="h-4 w-4 text-rias-lima" /> Nueva EPS
             </Link>
-
-            {/* Sesión */}
-            {yo?.rol === "admin" && (
-              <Link href="/admin" className="hidden items-center gap-1.5 rounded-xl border border-rias-borde px-3 py-2 text-sm font-bold text-rias-azul transition hover:bg-rias-app sm:inline-flex">
-                <ShieldCheck className="h-4 w-4 text-rias-azul2" /> Admin
-              </Link>
-            )}
-            {yo ? (
-              <button onClick={salir} title="Cerrar sesión" className="hidden items-center gap-1.5 rounded-xl border border-rias-borde px-3 py-2 text-sm font-bold text-rias-azul transition hover:bg-rias-app sm:inline-flex">
-                <LogOut className="h-4 w-4 text-rias-azul2" /> Salir
-              </button>
-            ) : (
-              <Link href="/acceso" className="hidden items-center gap-1.5 rounded-xl border border-rias-borde px-3 py-2 text-sm font-bold text-rias-azul transition hover:bg-rias-app sm:inline-flex">
-                <LogIn className="h-4 w-4 text-rias-azul2" /> Acceso
-              </Link>
-            )}
 
             <button
               onClick={() => setAbierto(true)}

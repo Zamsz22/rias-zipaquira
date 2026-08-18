@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient, createAdminClient, supabaseConfigurado } from "@/lib/supabase/server";
-import { usuarioActual, authRequerido } from "@/lib/auth";
+import { createClient, supabaseConfigurado } from "@/lib/supabase/server";
 
 // Lista las cargas existentes (para detectar archivos ya analizados).
 export async function GET() {
@@ -13,28 +12,6 @@ export async function GET() {
     .order("created_at", { ascending: false })
     .limit(2000);
   return NextResponse.json({ ok: true, cargas: data ?? [] });
-}
-
-// Deshacer una carga (solo admin): borra la carga, sus registros y el valor del componente
-// de esa EPS. El componente queda "sin dato" hasta que se vuelva a subir.
-export async function DELETE(req: Request) {
-  if (!supabaseConfigurado) return NextResponse.json({ ok: false, error: "Sin Supabase." }, { status: 503 });
-  if ((await usuarioActual())?.rol !== "admin") return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
-  const id = new URL(req.url).searchParams.get("id");
-  if (!id) return NextResponse.json({ ok: false, error: "Falta id." }, { status: 400 });
-  const db = createAdminClient();
-  if (!db) return NextResponse.json({ ok: false, error: "Sin cliente." }, { status: 503 });
-
-  const { data: carga } = await db.from("cargas").select("eps_id, tipo_documento").eq("id", id).maybeSingle();
-  if (!carga) return NextResponse.json({ ok: false, error: "La carga no existe." }, { status: 404 });
-
-  const { error } = await db.from("cargas").delete().eq("id", id); // al borrarla se borran sus registros
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-  // El % del componente (resultados_componente) no está ligado por FK a la carga: se borra aquí.
-  if (carga.tipo_documento && carga.tipo_documento !== "plan_mejora") {
-    await db.from("resultados_componente").delete().eq("eps_id", carga.eps_id).eq("componente", carga.tipo_documento);
-  }
-  return NextResponse.json({ ok: true });
 }
 
 type Payload = {
@@ -64,9 +41,6 @@ export async function POST(req: Request) {
       { ok: false, error: "Supabase no está configurado. Agrega las claves en .env.local." },
       { status: 503 },
     );
-  }
-  if (authRequerido() && !(await usuarioActual())) {
-    return NextResponse.json({ ok: false, error: "Inicia sesión con un correo autorizado para subir información." }, { status: 401 });
   }
   const supabase = await createClient();
   if (!supabase) {
