@@ -6,6 +6,9 @@ implementación de las Rutas Integrales de Atención en Salud (RIAS) por parte d
 Reúne los Excel que entregan los prestadores, saca las cifras de cada componente,
 las muestra con semáforo por EPS y genera informes en PDF con análisis.
 
+> 👩‍💻 **¿Eres del equipo técnico?** Lee el **[Manual de Desarrollador](MANUAL-DESARROLLADOR.md)**:
+> con qué está hecho, dónde está cada cosa, cómo funciona y cómo está integrado Supabase.
+
 ## Qué hace
 
 - Lee los Excel de cada componente: adherencia a historia clínica, indicadores, anexos,
